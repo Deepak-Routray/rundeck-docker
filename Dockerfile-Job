@@ -1,0 +1,33 @@
+FROM openjdk:8
+
+ENV SHARED_STORAGE=/rundeck
+
+ENV RD_USER=rundeck
+ENV RD_PASSWORD=rundeck
+ENV RD_PROJECT=DEFAULT
+ENV RD_HTTP_TIMEOUT=30
+ENV RD_DEBUG=1
+
+ENV NODES=localhost
+ENV RUNDECK_INSTALL_DIR=/opt/rundeck
+ENV rd_cli_home=$RUNDECK_INSTALL_DIR/rd-1.0.27/bin
+
+WORKDIR $RUNDECK_INSTALL_DIR
+
+RUN apt-get update && apt-get install -y \
+    uuid-runtime \
+    vim
+
+RUN wget https://github.com/rundeck/rundeck-cli/releases/download/v1.0.27/rd-1.0.27.zip \
+    && unzip $RUNDECK_INSTALL_DIR/rd-1.0.27.zip 
+     
+# copy data directory
+COPY ./data/bootstrap-job.sh /data/
+COPY ./data/entrypoint-job.sh /data/
+
+RUN chmod 777 /data/entrypoint-job.sh
+RUN chmod 777 /data/bootstrap-job.sh
+
+RUN sed -i -e 's/\r$//' /data/entrypoint-job.sh
+RUN sed -i -e 's/\r$//' /data/bootstrap-job.sh
+ENTRYPOINT ["/bin/bash","-c","/data/entrypoint-job.sh"]
