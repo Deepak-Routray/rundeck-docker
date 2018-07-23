@@ -8,13 +8,16 @@ do
     sleep 5
 done
 sleep 10
+if [ -f "$RSA_KEY_DIR/id_rsa" ]; then
+	if [ ! -f "$SHARED_STORAGE/storage/content/keys/${RD_PROJECT}/id_rsa" ]; then
+		$rd_cli_home/rd keys create -f ${RSA_KEY_DIR}/id_rsa --path keys/${RD_PROJECT}/id_rsa --type privateKey
+	fi
+fi
 if [ ! -d "$SHARED_STORAGE/projects/${RD_PROJECT}" ]; then
     echo "Creating default project"
     cd $SHARED_STORAGE/projects
     $rd_cli_home/rd projects create -p ${RD_PROJECT}
-    if [ -f "$RSA_KEY_DIR/id_rsa" ]; then
-        $rd_cli_home/rd keys create -f ${RSA_KEY_DIR}/id_rsa --path keys/${RD_PROJECT}/id_rsa --type privateKey
-    fi
+    
     #wait for projects to be created
     found="false"
     while [ $found = "false" ]
