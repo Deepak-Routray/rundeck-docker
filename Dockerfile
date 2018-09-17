@@ -31,12 +31,12 @@ RUN wget http://dl.bintray.com/rundeck/rundeck-maven/rundeck-launcher-2.11.4.jar
     && unzip $RUNDECK_INSTALL_DIR/rd-1.0.27.zip 
  
 # copy data directory
-COPY ./data/bootstrap.sh /data/
-COPY ./data/configure.sh /data/
+COPY data/bootstrap.sh /data/
+COPY data/configure.sh /data/
 
 RUN chmod 777 /data/configure.sh \
     && chmod 777 /data/bootstrap.sh \
     && sed -i -e 's/\r$//' /data/configure.sh \
-    & sed -i -e 's/\r$//' /data/bootstrap.sh
+    && sed -i -e 's/\r$//' /data/bootstrap.sh
 
 ENTRYPOINT ["/bin/bash","-c","/data/bootstrap.sh"]
