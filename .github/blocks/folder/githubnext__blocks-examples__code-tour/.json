@@ -1,0 +1,27 @@
+{
+  "tours": [
+    {
+      "name": "tour1",
+      "steps": [
+        {
+          "name": "New step",
+          "description": "",
+          "path": "Dockerfile",
+          "query": ""
+        },
+        {
+          "name": "user",
+          "description": "",
+          "path": "Dockerfile",
+          "query": "10"
+        },
+        {
+          "name": "New step",
+          "description": "",
+          "path": "Dockerfile",
+          "query": ""
+        }
+      ]
+    }
+  ]
+}
